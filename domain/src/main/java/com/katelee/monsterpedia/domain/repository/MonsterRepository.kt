@@ -1,7 +1,9 @@
 package com.katelee.monsterpedia.domain.repository
 
+import androidx.paging.PagingData
 import com.katelee.monsterpedia.domain.model.Monster
+import kotlinx.coroutines.flow.Flow
 
 interface MonsterRepository {
-    suspend fun getAll(): List<Monster>
+    fun getPaged(): Flow<PagingData<Monster>>
 }
