@@ -21,6 +21,15 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
+    flavorDimensions += "version"
+    productFlavors {
+        create("pokemon") {
+            dimension = "version"
+        }
+        create("digimon") {
+            dimension = "version"
+        }
+    }
 
     buildTypes {
         release {
