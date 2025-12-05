@@ -15,7 +15,7 @@ class MonsterListViewModel @Inject constructor(
     private val repo: MonsterRepository
 ) : ViewModel() {
 
-    val monsters = repo.getPaged().cachedIn(viewModelScope)
+    val pagingDataFlow = repo.getPaged().cachedIn(viewModelScope)
 
     private val intentChannel = Channel<MonsterListIntent>(Channel.Factory.UNLIMITED)
 
