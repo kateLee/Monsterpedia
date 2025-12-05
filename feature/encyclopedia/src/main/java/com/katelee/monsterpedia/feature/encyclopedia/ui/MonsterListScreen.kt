@@ -35,7 +35,10 @@ fun MonsterListScreen(
             error = (lazyPagingItems.loadState.refresh as LoadState.Error).error
         )
         is LoadState.NotLoading -> {
-            LazyVerticalGrid(columns = GridCells.Fixed(2)) {
+            LazyVerticalGrid(columns = GridCells.Fixed(2),
+                contentPadding = PaddingValues(16.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 items(lazyPagingItems.itemCount, key = lazyPagingItems.itemKey { it.id }) { index ->
                     lazyPagingItems[index]?.run {
                         MonsterRow(monster = this, onClick = { onSelect(id) })

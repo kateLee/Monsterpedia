@@ -26,10 +26,8 @@ fun MonsterRow(
 ) {
     Card(
         modifier = Modifier
-            .padding(4.dp)
             .fillMaxWidth()
             .clickable { onClick() }
-            .padding(vertical = 8.dp)
     ) {
         AsyncImage(
             model = ImageRequest.Builder(context = LocalContext.current)
