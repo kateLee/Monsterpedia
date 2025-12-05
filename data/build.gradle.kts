@@ -44,6 +44,15 @@ dependencies {
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
 
+    // Retrofit
+    api(libs.retrofit)
+    // Moshi
+    implementation(libs.moshi.kotlin) // Latest Moshi version
+    // Moshi KSP codegen
+    ksp(libs.moshi.kotlin.codegen) // Match Moshi version
+    // Moshi Converter for Retrofit
+    implementation(libs.converter.moshi)
+
     implementation(project(":domain"))
 
     testImplementation(libs.junit)
