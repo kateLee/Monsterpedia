@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
@@ -108,8 +109,7 @@ fun MonsterBaseStats(modifier: Modifier, stats: List<Stat>) {
             StatType.fromString(stat.name)?.let { statType ->
                 StatBar(
                     statType = statType,
-                    value = stat.value,
-                    maxValue = stat.max,
+                    value = stat.max,
                     modifier = Modifier.fillMaxWidth()
                 )
                 Spacer(modifier = Modifier.height(16.dp))
@@ -121,9 +121,9 @@ fun MonsterBaseStats(modifier: Modifier, stats: List<Stat>) {
 fun StatBar(
     statType: StatType,
     value: Int,
-    maxValue: Int,
     modifier: Modifier = Modifier,
     showAnimation: Boolean = true) {
+    val maxValue = statType.max
     val progress = (value.toFloat() / maxValue.toFloat()).coerceIn(0f, 1f)
 
     // 動畫效果
@@ -168,11 +168,26 @@ fun StatBar(
                     .padding(horizontal = 8.dp),
                 contentAlignment = Alignment.CenterStart
             ) {
-                Text(
-                    text = "$value/$maxValue",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = if (progress > 0.3f) Color.White else Color.Gray
-                )
+                if (progress > 0.2f)
+                    Text(
+                        text = "$value/$maxValue",
+                        style = MaterialTheme.typography.bodySmall,
+                        modifier =  Modifier.align(Alignment.CenterStart)
+                                .fillMaxWidth(progress)
+                                .padding(end = 8.dp)
+                                .wrapContentWidth(Alignment.End),
+                        color = Color.White
+                    )
+                else {
+                    Row {
+                        Spacer(modifier = Modifier.fillMaxWidth(progress).padding(end = 8.dp))
+                        Text(
+                            text = "$value/$maxValue",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = Color.Black
+                        )
+                    }
+                }
             }
         }
     }
@@ -224,12 +239,12 @@ private fun chipColor(type: String): Color {
 }
 
 // 屬性類型
-enum class StatType(val displayName: String, val key: String, val color: Color) {
+enum class StatType(val displayName: String, val key: String, val color: Color, val max: Int = 300) {
     HP("HP", "hp", Color(0xFFFF5959)),
     ATK("ATK", "attack", Color(0xFFF08030)),
     DEF("DEF", "defense", Color(0xFF6890F0)),
     SPEED("SPD", "speed", Color(0xFFF85888)),
-    EXP("EXP", "experience", Color(0xFF78C850));
+    EXP("EXP", "experience", Color(0xFF78C850), max = 1000);
 
     companion object {
         // 方法一: 從 key 轉換 (推薦,支援多種格式)
