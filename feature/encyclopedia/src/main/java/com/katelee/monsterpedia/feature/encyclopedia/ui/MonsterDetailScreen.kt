@@ -18,23 +18,23 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import coil3.compose.AsyncImage
-import coil3.request.ImageRequest
-import coil3.request.crossfade
 import com.katelee.monsterpedia.domain.model.Stat
 import com.katelee.monsterpedia.feature.encyclopedia.mvi.MonsterDetailIntent
 import com.katelee.monsterpedia.feature.encyclopedia.viewmodel.MonsterDetailViewModel
@@ -58,18 +58,17 @@ fun MonsterDetailScreen(
         }
         state.item?.let { monster ->
             Column(modifier = Modifier.background(Color.Black).fillMaxHeight()) {
-                Card {
-                    AsyncImage(
-                        model = ImageRequest.Builder(context = LocalContext.current)
-                            .data(monster.imageUrl)
-                            .crossfade(true)
-                            .build(),
-////            error = painterResource(R.drawable.ic_broken_image),
-////            placeholder = painterResource(R.drawable.loading_img),
-                        contentDescription = "monster image",
-                        contentScale = ContentScale.Inside,
-                        modifier = Modifier.height(300.dp).fillMaxWidth(),
-                    )
+                var dominantColor by remember { mutableStateOf(Color.Gray) }
+                Card(modifier = Modifier
+                        .fillMaxWidth(),
+                    colors = CardDefaults.cardColors(
+                        containerColor = dominantColor
+                    )) {
+                    MonsterImageWithDominantColor(monster.imageUrl,
+                        contentScale = ContentScale.FillHeight,
+                        modifier = Modifier.height(300.dp).fillMaxWidth()) {
+                        dominantColor = it
+                    }
                 }
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(

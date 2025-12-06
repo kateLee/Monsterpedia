@@ -44,6 +44,7 @@ dependencies {
     implementation(libs.androidx.paging.compose)
 
     implementation(libs.hilt.android)
+    implementation(libs.androidx.palette.ktx)
     ksp(libs.hilt.compiler)
 
     api(libs.coil.compose)
