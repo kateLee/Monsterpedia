@@ -16,7 +16,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
@@ -24,7 +23,7 @@ import com.katelee.monsterpedia.feature.encyclopedia.viewmodel.MonsterListViewMo
 
 @Composable
 fun MonsterListScreen(
-    viewModel: MonsterListViewModel = viewModel(),
+    viewModel: MonsterListViewModel,
     onSelect: (String) -> Unit
 ) {
     val lazyPagingItems = viewModel.pagingDataFlow.collectAsLazyPagingItems()

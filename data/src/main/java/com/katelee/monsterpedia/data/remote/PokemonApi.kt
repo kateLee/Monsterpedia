@@ -1,6 +1,7 @@
 package com.katelee.monsterpedia.data.remote
 
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface PokemonApi {
@@ -10,8 +11,8 @@ interface PokemonApi {
         @Query("offset") offset: Int = 0,
     ): PokemonListResponse
 
-//    @GET("pokemon/{id}")
-//    suspend fun getMonsterDetail(
-//        @Path("id") id: String
-//    ): PokemonDto
+    @GET("pokemon/{id}")
+    suspend fun getMonsterDetail(
+        @Path("id") id: String
+    ): PokemonDetailDto
 }

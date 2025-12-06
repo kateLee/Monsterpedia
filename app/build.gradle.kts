@@ -63,6 +63,8 @@ dependencies {
     implementation(libs.androidx.compose.material3)
 
     implementation(libs.hilt.android)
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.hilt.navigation.compose)
     ksp(libs.hilt.compiler)
 
     implementation(project(":feature:encyclopedia"))
