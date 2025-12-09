@@ -93,6 +93,10 @@ fun MonsterDetailScreen(
                         stats = monster.stats
                     )
                 }
+                Text(monster.description,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Color.White,
+                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 16.dp),)
             }
         }
     }

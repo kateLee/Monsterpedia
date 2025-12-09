@@ -28,9 +28,7 @@ class DigimonRepositoryImpl @Inject constructor(private val api: DigimonApi) : M
             name = name,
             imageUrl = images.firstOrNull()?.href ?: "",
             types = types.map { it.type },
-            stats = emptyList(),
-            height = null,
-            weight = null,
+            description = descriptions.firstOrNull { it.language == "en_us" }?.description ?: "",
         )
     }
 }

@@ -4,10 +4,11 @@ data class MonsterDetail(
     val id: String,
     val name: String,
     val imageUrl: String,
-    val types: List<String>,
-    val stats: List<Stat>,
-    val height: Int?,
-    val weight: Int?
+    val types: List<String> = emptyList(),
+    val stats: List<Stat> = emptyList(),
+    val height: Int? = null,
+    val weight: Int? = null,
+    val description: String = "",
 )
 data class Stat(
     val name: String,
