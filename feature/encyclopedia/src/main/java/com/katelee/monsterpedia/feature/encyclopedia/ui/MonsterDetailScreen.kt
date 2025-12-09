@@ -84,8 +84,8 @@ fun MonsterDetailScreen(
                 MonsterTypeChips(modifier = Modifier.padding(horizontal = 8.dp).fillMaxWidth(), types = monster.types)
                 Row(modifier = Modifier.padding(horizontal = 8.dp, vertical = 16.dp).fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceAround) {
-                    TitleInfo("Weight", "${monster.weight} KG")
-                    TitleInfo("Height", "${monster.height} M")
+                    TitleInfo("Weight", "${monster.weight ?: "???"} KG")
+                    TitleInfo("Height", "${monster.height ?: "???"} M")
                 }
                 MonsterBaseStats(modifier = Modifier.padding(horizontal = 8.dp).fillMaxWidth(),
                     stats = monster.stats)
