@@ -34,9 +34,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.katelee.monsterpedia.domain.model.Stat
+import com.katelee.monsterpedia.feature.encyclopedia.R
 import com.katelee.monsterpedia.feature.encyclopedia.mvi.MonsterDetailIntent
 import com.katelee.monsterpedia.feature.encyclopedia.viewmodel.MonsterDetailViewModel
 
@@ -84,8 +86,8 @@ fun MonsterDetailScreen(
                 MonsterTypeChips(modifier = Modifier.padding(horizontal = 8.dp).fillMaxWidth(), types = monster.types)
                 Row(modifier = Modifier.padding(horizontal = 8.dp, vertical = 16.dp).fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceAround) {
-                    TitleInfo("Weight", "${monster.weight ?: "???"} KG")
-                    TitleInfo("Height", "${monster.height ?: "???"} M")
+                    TitleInfo(stringResource(R.string.weight), "${monster.weight ?: "???"} KG")
+                    TitleInfo(stringResource(R.string.height), "${monster.height ?: "???"} M")
                 }
                 if (!monster.stats.isEmpty()) {
                     MonsterBaseStats(
@@ -106,7 +108,7 @@ fun MonsterDetailScreen(
 fun MonsterBaseStats(modifier: Modifier, stats: List<Stat>) {
     Column(modifier = modifier) {
         Text(
-            "Base Stats",
+            stringResource(R.string.base_stats),
             style = MaterialTheme.typography.titleLarge,
             color = Color.White,
             maxLines = 1,
