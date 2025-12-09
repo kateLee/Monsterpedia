@@ -87,8 +87,12 @@ fun MonsterDetailScreen(
                     TitleInfo("Weight", "${monster.weight ?: "???"} KG")
                     TitleInfo("Height", "${monster.height ?: "???"} M")
                 }
-                MonsterBaseStats(modifier = Modifier.padding(horizontal = 8.dp).fillMaxWidth(),
-                    stats = monster.stats)
+                if (!monster.stats.isEmpty()) {
+                    MonsterBaseStats(
+                        modifier = Modifier.padding(horizontal = 8.dp).fillMaxWidth(),
+                        stats = monster.stats
+                    )
+                }
             }
         }
     }
