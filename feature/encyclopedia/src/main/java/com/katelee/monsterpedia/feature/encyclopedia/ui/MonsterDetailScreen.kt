@@ -64,6 +64,12 @@ fun MonsterDetailScreen(
                 var dominantColor by remember { mutableStateOf(Color.Gray) }
                 Card(modifier = Modifier
                         .fillMaxWidth(),
+                    shape = RoundedCornerShape(
+                        topStart = 0.dp,
+                        topEnd = 0.dp,
+                        bottomStart = 16.dp,
+                        bottomEnd = 16.dp
+                    ),
                     colors = CardDefaults.cardColors(
                         containerColor = dominantColor
                     )) {
