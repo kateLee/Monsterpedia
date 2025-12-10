@@ -27,8 +27,7 @@ class DigimonRepositoryImpl @Inject constructor(private val api: DigimonApi) : M
             id = id,
             name = name,
             imageUrl = images.firstOrNull()?.href ?: "",
-            types = types.map { it.type },
-            attributes = attributes.map { it.attribute },
+            types = (types.map { it.type } + attributes.map { it.attribute }).distinct(),
             description = descriptions.firstOrNull { it.language == "en_us" }?.description ?: "",
         )
     }

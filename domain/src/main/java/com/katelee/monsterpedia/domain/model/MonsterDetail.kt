@@ -5,7 +5,6 @@ data class MonsterDetail(
     val name: String,
     val imageUrl: String,
     val types: List<String> = emptyList(),
-    val attributes: List<String> = emptyList(),
     val stats: List<Stat> = emptyList(),
     val height: Int? = null,
     val weight: Int? = null,

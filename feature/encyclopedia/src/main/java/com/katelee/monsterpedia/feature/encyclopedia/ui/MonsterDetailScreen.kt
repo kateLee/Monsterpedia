@@ -98,7 +98,6 @@ fun MonsterDetailScreen(
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 MonsterTypeChips(modifier = Modifier.padding(horizontal = 8.dp).fillMaxWidth(), types = monster.types)
-                MonsterAttributeChips(modifier = Modifier.padding(horizontal = 8.dp).fillMaxWidth(), attributes = monster.attributes)
                 if (monster.weight != null || monster.height != null) {
                     Row(modifier = Modifier.padding(horizontal = 8.dp, vertical = 16.dp).fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceAround) {
@@ -263,34 +262,6 @@ private fun chipColor(type: String): Color {
         "fairy" -> Color(0xFFEE99AC)
         else -> Color.Gray
     }
-}
-
-@Composable
-fun MonsterAttributeChips(modifier: Modifier, attributes: List<String>) {
-    FlowRow(modifier = modifier,
-        horizontalArrangement = Arrangement.SpaceAround) {
-        attributes.forEach { attribute ->
-            AttributeChip(attribute)
-        }
-    }
-}
-
-@Composable
-private fun AttributeChip(attribute: String) {
-    AssistChip(
-        onClick = {},
-        label = {
-            Text(attribute,
-                maxLines = 1,
-                textAlign = TextAlign.Center,
-                modifier = Modifier.widthIn(min = 160.dp),)
-        },
-        leadingIcon = null,
-        colors = AssistChipDefaults.assistChipColors(
-            containerColor = chipColor(attribute),
-            labelColor = Color.White
-        ),
-    )
 }
 // 屬性類型
 enum class StatType(val displayName: String, val key: String, val color: Color, val max: Int = 300) {
