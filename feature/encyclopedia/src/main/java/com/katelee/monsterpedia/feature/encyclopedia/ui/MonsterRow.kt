@@ -1,9 +1,7 @@
 package com.katelee.monsterpedia.feature.encyclopedia.ui
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -37,14 +35,13 @@ fun MonsterRow(
     ) {
         MonsterImageWithDominantColor(monster.imageUrl,
             contentScale = ContentScale.FillWidth,
-            modifier = Modifier.padding(horizontal = 8.dp).fillMaxWidth()) {
+            modifier = Modifier.padding(8.dp).fillMaxWidth()) {
             dominantColor = it
         }
-        Spacer(modifier = Modifier.height(8.dp))
         Text(monster.name,
             style = MaterialTheme.typography.titleMedium,
             color = Color.White,
-            modifier = Modifier.padding(horizontal = 8.dp).fillMaxWidth(),
+            modifier = Modifier.padding(8.dp).fillMaxWidth(),
             maxLines = 1,
             textAlign = TextAlign.Center,
             )
