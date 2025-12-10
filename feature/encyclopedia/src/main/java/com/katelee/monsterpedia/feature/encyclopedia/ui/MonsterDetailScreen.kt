@@ -46,6 +46,7 @@ import com.katelee.monsterpedia.feature.encyclopedia.viewmodel.MonsterDetailView
 fun MonsterDetailScreen(
     viewModel: MonsterDetailViewModel,
     id: String,
+    onSetColor: (Color) -> Unit
 ) {
     LaunchedEffect(id) {
         viewModel.onIntent(MonsterDetailIntent.Load(id))
@@ -75,8 +76,10 @@ fun MonsterDetailScreen(
                     )) {
                     MonsterImageWithDominantColor(monster.imageUrl,
                         contentScale = ContentScale.FillHeight,
-                        modifier = Modifier.height(300.dp).fillMaxWidth()) {
+                        modifier = Modifier.height(300.dp).fillMaxWidth()
+                            .padding(start = 16.dp, end = 16.dp, bottom = 16.dp )) {
                         dominantColor = it
+                        onSetColor(it)
                     }
                 }
                 Spacer(modifier = Modifier.height(16.dp))

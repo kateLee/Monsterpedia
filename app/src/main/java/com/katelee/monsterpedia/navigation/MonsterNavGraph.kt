@@ -2,6 +2,7 @@ package com.katelee.monsterpedia.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -10,7 +11,8 @@ import com.katelee.monsterpedia.feature.encyclopedia.ui.MonsterDetailScreen
 import com.katelee.monsterpedia.feature.encyclopedia.ui.MonsterListScreen
 
 @Composable
-fun MonsterNavGraph(navController: NavHostController, modifier: Modifier) {
+fun MonsterNavGraph(navController: NavHostController, modifier: Modifier,
+                    onSetColor: (Color) -> Unit) {
     NavHost(
         navController = navController,
         startDestination = Routes.LIST,
@@ -29,7 +31,8 @@ fun MonsterNavGraph(navController: NavHostController, modifier: Modifier) {
             MonsterDetailScreen(
                 id = backStackEntry.arguments?.getString("id") ?: "",
                 viewModel = hiltViewModel(backStackEntry),
-                )
+                onSetColor = onSetColor,
+            )
         }
     }
 }
