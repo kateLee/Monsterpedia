@@ -9,6 +9,7 @@ data class DigimonDetailDto(
     @field:Json(name = "id") val id: Int,
     @field:Json(name = "images") val images: List<DigimonImageDto>,
     @field:Json(name = "types") val types: List<DigimonTypeDto>,
+    @field:Json(name = "attributes") val attributes: List<DigimonAttributeDto>,
     @field:Json(name = "descriptions") val descriptions: List<DigimonDescriptionDto>,
     )
 
@@ -21,6 +22,12 @@ data class DigimonImageDto(
 data class DigimonTypeDto(
     @field:Json(name = "id") val id: Int,
     @field:Json(name = "type") val type: String,
+)
+
+@JsonClass(generateAdapter = true)
+data class DigimonAttributeDto(
+    @field:Json(name = "id") val id: Int,
+    @field:Json(name = "attribute") val attribute: String,
 )
 
 @JsonClass(generateAdapter = true)

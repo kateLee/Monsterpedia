@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -93,6 +94,7 @@ fun MonsterDetailScreen(
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 MonsterTypeChips(modifier = Modifier.padding(horizontal = 8.dp).fillMaxWidth(), types = monster.types)
+                MonsterAttributeChips(modifier = Modifier.padding(horizontal = 8.dp).fillMaxWidth(), attributes = monster.attributes)
                 Row(modifier = Modifier.padding(horizontal = 8.dp, vertical = 16.dp).fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceAround) {
                     TitleInfo(stringResource(R.string.weight), "${monster.weight ?: "???"} KG")
@@ -217,7 +219,7 @@ fun MonsterTypeChips(
     types: List<String>,
     modifier: Modifier = Modifier
 ) {
-    Row(modifier = modifier,
+    FlowRow(modifier = modifier,
         horizontalArrangement = Arrangement.SpaceAround) {
         types.forEach { type ->
             TypeChip(type)
@@ -257,6 +259,33 @@ private fun chipColor(type: String): Color {
     }
 }
 
+@Composable
+fun MonsterAttributeChips(modifier: Modifier, attributes: List<String>) {
+    FlowRow(modifier = modifier,
+        horizontalArrangement = Arrangement.SpaceAround) {
+        attributes.forEach { attribute ->
+            AttributeChip(attribute)
+        }
+    }
+}
+
+@Composable
+private fun AttributeChip(attribute: String) {
+    AssistChip(
+        onClick = {},
+        label = {
+            Text(attribute,
+                maxLines = 1,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.widthIn(min = 160.dp),)
+        },
+        leadingIcon = null,
+        colors = AssistChipDefaults.assistChipColors(
+            containerColor = chipColor(attribute),
+            labelColor = Color.White
+        ),
+    )
+}
 // 屬性類型
 enum class StatType(val displayName: String, val key: String, val color: Color, val max: Int = 300) {
     HP("HP", "hp", Color(0xFFFF5959)),
