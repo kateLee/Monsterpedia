@@ -7,4 +7,4 @@ An Android demo application using Jetpack Compose that allows users to explore P
 
 <br/>
 <img width="144" height="3120" alt="Screenshot_20251210_120903" src="https://github.com/user-attachments/assets/13102084-3885-496b-98ef-3b87ddd5382d" />
-<img width="144" height="3120" alt="Screenshot_20251210_131025" src="https://github.com/user-attachments/assets/eae6e47c-5756-454c-8cce-0c1567ba119b" />
+<img width="144" height="3120" alt="Screenshot_20251210_141736" src="https://github.com/user-attachments/assets/2c5de009-71bb-4171-a012-48ac0bf523b7" />
