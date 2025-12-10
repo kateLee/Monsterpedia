@@ -99,10 +99,12 @@ fun MonsterDetailScreen(
                 Spacer(modifier = Modifier.height(8.dp))
                 MonsterTypeChips(modifier = Modifier.padding(horizontal = 8.dp).fillMaxWidth(), types = monster.types)
                 MonsterAttributeChips(modifier = Modifier.padding(horizontal = 8.dp).fillMaxWidth(), attributes = monster.attributes)
-                Row(modifier = Modifier.padding(horizontal = 8.dp, vertical = 16.dp).fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceAround) {
-                    TitleInfo(stringResource(R.string.weight), "${monster.weight ?: "???"} KG")
-                    TitleInfo(stringResource(R.string.height), "${monster.height ?: "???"} M")
+                if (monster.weight != null || monster.height != null) {
+                    Row(modifier = Modifier.padding(horizontal = 8.dp, vertical = 16.dp).fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceAround) {
+                        TitleInfo(stringResource(R.string.weight), "${monster.weight ?: "???"} KG")
+                        TitleInfo(stringResource(R.string.height), "${monster.height ?: "???"} M")
+                    }
                 }
                 if (!monster.stats.isEmpty()) {
                     MonsterBaseStats(
