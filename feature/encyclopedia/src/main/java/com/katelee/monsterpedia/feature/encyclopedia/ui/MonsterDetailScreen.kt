@@ -1,8 +1,16 @@
 package com.katelee.monsterpedia.feature.encyclopedia.ui
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,10 +27,13 @@ import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -36,14 +47,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.katelee.monsterpedia.domain.model.Skill
 import com.katelee.monsterpedia.domain.model.Stat
 import com.katelee.monsterpedia.feature.encyclopedia.R
 import com.katelee.monsterpedia.feature.encyclopedia.mvi.MonsterDetailIntent
 import com.katelee.monsterpedia.feature.encyclopedia.viewmodel.MonsterDetailViewModel
+import kotlin.collections.forEach
 
 @Composable
 fun MonsterDetailScreen(
@@ -64,7 +78,8 @@ fun MonsterDetailScreen(
             ErrorScreen(error = it)
         }
         state.item?.let { monster ->
-            Column(modifier = Modifier.background(Color.Black)
+            Column(modifier = Modifier
+                .background(Color.Black)
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())) {
                 var dominantColor by remember { mutableStateOf(Color.Gray) }
@@ -81,8 +96,10 @@ fun MonsterDetailScreen(
                     )) {
                     MonsterImageWithDominantColor(monster.imageUrl,
                         contentScale = ContentScale.FillHeight,
-                        modifier = Modifier.height(300.dp).fillMaxWidth()
-                            .padding(start = 16.dp, end = 16.dp, bottom = 16.dp )) {
+                        modifier = Modifier
+                            .height(300.dp)
+                            .fillMaxWidth()
+                            .padding(start = 16.dp, end = 16.dp, bottom = 16.dp)) {
                         dominantColor = it
                         onSetColor(it)
                     }
@@ -92,22 +109,38 @@ fun MonsterDetailScreen(
                     monster.name,
                     style = MaterialTheme.typography.headlineLarge,
                     color = Color.White,
-                    modifier = Modifier.padding(horizontal = 8.dp).fillMaxWidth(),
+                    modifier = Modifier
+                        .padding(horizontal = 8.dp)
+                        .fillMaxWidth(),
                     maxLines = 1,
                     textAlign = TextAlign.Center,
                 )
                 Spacer(modifier = Modifier.height(8.dp))
-                MonsterTypeChips(modifier = Modifier.padding(horizontal = 8.dp).fillMaxWidth(), types = monster.types)
+                MonsterTypeChips(modifier = Modifier
+                    .padding(horizontal = 8.dp)
+                    .fillMaxWidth(), types = monster.types)
                 if (monster.weight != null || monster.height != null) {
-                    Row(modifier = Modifier.padding(horizontal = 8.dp, vertical = 16.dp).fillMaxWidth(),
+                    Row(modifier = Modifier
+                        .padding(horizontal = 8.dp, vertical = 16.dp)
+                        .fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceAround) {
                         TitleInfo(stringResource(R.string.weight), "${monster.weight ?: "???"} KG")
                         TitleInfo(stringResource(R.string.height), "${monster.height ?: "???"} M")
                     }
                 }
+                if (!monster.skills.isEmpty()) {
+                    MonsterSkills(
+                        modifier = Modifier
+                            .padding(8.dp)
+                            .fillMaxWidth(),
+                        skills = monster.skills
+                    )
+                }
                 if (!monster.stats.isEmpty()) {
                     MonsterBaseStats(
-                        modifier = Modifier.padding(horizontal = 8.dp).fillMaxWidth(),
+                        modifier = Modifier
+                            .padding(horizontal = 8.dp)
+                            .fillMaxWidth(),
                         stats = monster.stats
                     )
                 }
@@ -121,6 +154,91 @@ fun MonsterDetailScreen(
 }
 
 @Composable
+fun MonsterSkills(modifier: Modifier, skills: List<Skill>) {
+    var expanded by remember { mutableStateOf(false) }
+
+    Column(
+        modifier = modifier
+            .animateContentSize()
+            .border(
+                width = 1.dp,
+                color = Color.White,
+                shape = RoundedCornerShape(8.dp)  // 可調整圓角
+            )
+            .padding(16.dp)// 內邊距,讓內容不貼邊
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth()
+                .clickable { expanded = !expanded },
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Text(
+                stringResource(R.string.skills),
+                style = MaterialTheme.typography.titleLarge,
+                color = Color.White,
+                maxLines = 1,
+            )
+            val rotation: Float by animateFloatAsState(
+                targetValue = if (expanded) 180f else 0f,
+                label = "Icon Rotation"
+            )
+            Icon(
+                imageVector = Icons.Filled.KeyboardArrowDown,
+                modifier = Modifier.graphicsLayer { rotationZ = rotation },
+                contentDescription = null,
+                tint = Color.White
+            )
+        }
+
+        // 永遠顯示第一個技能
+        if (skills.isNotEmpty()) {
+            SkillItem(
+                skill = skills.first(),
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
+
+        // 展開時顯示剩下的技能
+        AnimatedVisibility(
+            visible = expanded,
+            enter = fadeIn() + expandVertically(),
+            exit = fadeOut() + shrinkVertically()
+        ) {
+            Column {
+                if (skills.size > 1) {
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    skills.drop(1).forEach { skill ->
+                        SkillItem(
+                            skill = skill,
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                        Spacer(modifier = Modifier.height(16.dp))
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun SkillItem(skill: Skill, modifier: Modifier) {
+    Column(modifier = modifier) {
+        Text(
+            skill.name,
+            style = MaterialTheme.typography.titleMedium,
+            color = Color.White,
+        )
+        Text(
+            text = skill.description,
+            style = MaterialTheme.typography.bodyMedium,
+            color = Color.White,
+            modifier = Modifier.padding(top = 4.dp)
+        )
+    }
+}
+
+@Composable
 fun MonsterBaseStats(modifier: Modifier, stats: List<Stat>) {
     Column(modifier = modifier) {
         Text(
@@ -128,7 +246,9 @@ fun MonsterBaseStats(modifier: Modifier, stats: List<Stat>) {
             style = MaterialTheme.typography.titleLarge,
             color = Color.White,
             maxLines = 1,
-            modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 16.dp),
             textAlign = TextAlign.Center,
         )
         stats.forEach { stat ->
@@ -198,15 +318,18 @@ fun StatBar(
                     Text(
                         text = "$value/$maxValue",
                         style = MaterialTheme.typography.bodySmall,
-                        modifier =  Modifier.align(Alignment.CenterStart)
-                                .fillMaxWidth(progress)
-                                .padding(end = 8.dp)
-                                .wrapContentWidth(Alignment.End),
+                        modifier =  Modifier
+                            .align(Alignment.CenterStart)
+                            .fillMaxWidth(progress)
+                            .padding(end = 8.dp)
+                            .wrapContentWidth(Alignment.End),
                         color = Color.White
                     )
                 else {
                     Row {
-                        Spacer(modifier = Modifier.fillMaxWidth(progress).padding(end = 8.dp))
+                        Spacer(modifier = Modifier
+                            .fillMaxWidth(progress)
+                            .padding(end = 8.dp))
                         Text(
                             text = "$value/$maxValue",
                             style = MaterialTheme.typography.bodySmall,

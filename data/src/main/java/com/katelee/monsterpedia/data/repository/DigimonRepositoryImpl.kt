@@ -7,6 +7,7 @@ import com.katelee.monsterpedia.data.remote.DigimonApi
 import com.katelee.monsterpedia.data.remote.DigimonPagingSource
 import com.katelee.monsterpedia.domain.model.Monster
 import com.katelee.monsterpedia.domain.model.MonsterDetail
+import com.katelee.monsterpedia.domain.model.Skill
 import com.katelee.monsterpedia.domain.repository.MonsterRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -29,6 +30,9 @@ class DigimonRepositoryImpl @Inject constructor(private val api: DigimonApi) : M
             imageUrl = images.firstOrNull()?.href ?: "",
             types = (types.map { it.type } + attributes.map { it.attribute }).distinct(),
             description = descriptions.firstOrNull { it.language == "en_us" }?.description ?: "",
+            skills = skills.mapNotNull {
+                if (it.translation.isEmpty()) Skill(it.skill, it.description)
+                else null },
         )
     }
 }
