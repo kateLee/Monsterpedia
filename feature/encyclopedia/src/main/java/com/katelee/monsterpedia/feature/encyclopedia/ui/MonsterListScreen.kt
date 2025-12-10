@@ -16,10 +16,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
+import com.katelee.monsterpedia.feature.encyclopedia.R
 import com.katelee.monsterpedia.feature.encyclopedia.viewmodel.MonsterListViewModel
 
 @Composable
@@ -55,7 +57,7 @@ fun MonsterListScreen(
                             Button(
                                 onClick = { lazyPagingItems.retry() }
                             ) {
-                                Text("Retry")
+                                Text(stringResource(R.string.retry))
                             }
                         }
                         else -> {}
@@ -87,7 +89,7 @@ fun LoadingScreen() {
 @Composable
 fun ErrorScreen(error: Throwable) {
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Text(error.message ?: "Unknown error",
+        Text(error.message ?: stringResource(R.string.unknown_error),
             modifier = Modifier.padding(horizontal = 8.dp))
     }
 }
