@@ -1,6 +1,5 @@
 package com.katelee.monsterpedia.data.remote
 
-import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.katelee.monsterpedia.domain.model.Monster
@@ -12,7 +11,6 @@ class DigimonPagingSource(private val api: DigimonApi) : PagingSource<Int, Monst
 
         return try {
             val response = api.getMonsters(page = page, pageSize = params.loadSize)
-            Log.d("DigimonPagingSource", "response: $response")
             LoadResult.Page(
                 data = response.content.map {
                     Monster(
@@ -30,5 +28,8 @@ class DigimonPagingSource(private val api: DigimonApi) : PagingSource<Int, Monst
     }
 
     override fun getRefreshKey(state: PagingState<Int, Monster>): Int? =
-        state.anchorPosition
+        state.anchorPosition?.let { anchorPosition ->
+            val anchorPage = state.closestPageToPosition(anchorPosition)
+            anchorPage?.prevKey?.plus(1) ?: anchorPage?.nextKey?.minus(1)
+        }
 }

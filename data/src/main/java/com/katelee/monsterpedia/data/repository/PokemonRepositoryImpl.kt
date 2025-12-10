@@ -18,7 +18,8 @@ class PokemonRepositoryImpl @Inject constructor(private val api: PokemonApi) : M
             config = PagingConfig(
                 pageSize = 10,
                 prefetchDistance = 2,
-                enablePlaceholders = false
+                enablePlaceholders = false,
+                initialLoadSize = 10, // 為了避免頁數亂掉，不用原始3倍
             ),
             pagingSourceFactory = { PokemonPagingSource(api) }
         ).flow

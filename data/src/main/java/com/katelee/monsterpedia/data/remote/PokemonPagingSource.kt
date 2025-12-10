@@ -28,5 +28,8 @@ class PokemonPagingSource(private val api: PokemonApi) : PagingSource<Int, Monst
     }
 
     override fun getRefreshKey(state: PagingState<Int, Monster>): Int? =
-        state.anchorPosition
+        state.anchorPosition?.let { anchorPosition ->
+            val anchorPage = state.closestPageToPosition(anchorPosition)
+            anchorPage?.prevKey?.plus(1) ?: anchorPage?.nextKey?.minus(1)
+        }
 }
