@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -60,7 +61,8 @@ fun MonsterApp(navController: NavHostController = rememberNavController()) {
                             }
                         },
                         actions = { Text("#${id ?: ""}",
-                            color = Color.White) }
+                            color = Color.White,
+                            modifier = Modifier.padding(horizontal = 8.dp)) }
                     )
                 }
             }
