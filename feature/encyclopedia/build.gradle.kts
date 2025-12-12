@@ -42,6 +42,16 @@ android {
             jvmTarget = JvmTarget.JVM_17
             optIn.add("kotlin.RequiresOptIn")
         }
+
+        testOptions {
+            unitTests {
+                isIncludeAndroidResources = true
+                isReturnDefaultValues = true
+                all {
+                    it.useJUnitPlatform() // JUnit 5,6 用這個
+                }
+            }
+        }
     }
 }
 
@@ -61,7 +71,18 @@ dependencies {
 
     implementation(project(":domain"))
 
-    testImplementation(libs.junit)
+    // ==================== Unit Test (JUnit 6) ====================
+    // Aligning all JUnit dependencies to the same version
+    testImplementation(platform(libs.junit.bom))
+    testImplementation(libs.junit.jupiter)
+    testRuntimeOnly(libs.junit.platform.launcher)
+
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.mockk)
+    testImplementation(libs.turbine)
+
+    // ==================== Instrumented Test (JUnit 4) ====================
+    testImplementation(libs.androidx.core.testing)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 }
