@@ -63,7 +63,6 @@ import kotlin.collections.forEach
 fun MonsterDetailScreen(
     viewModel: MonsterDetailViewModel,
     id: String,
-    onSetColor: (Color) -> Unit
 ) {
     LaunchedEffect(id) {
         viewModel.onIntent(MonsterDetailIntent.Load(id))
@@ -101,7 +100,7 @@ fun MonsterDetailScreen(
                             .fillMaxWidth()
                             .padding(start = 16.dp, end = 16.dp, bottom = 16.dp)) {
                         dominantColor = it
-                        onSetColor(it)
+                        viewModel.onIntent(MonsterDetailIntent.ColorExtracted(it))
                     }
                 }
                 Spacer(modifier = Modifier.height(16.dp))
