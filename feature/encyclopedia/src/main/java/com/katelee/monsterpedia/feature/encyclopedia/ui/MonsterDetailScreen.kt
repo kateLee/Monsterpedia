@@ -57,7 +57,9 @@ import com.katelee.monsterpedia.domain.model.Stat
 import com.katelee.monsterpedia.feature.encyclopedia.R
 import com.katelee.monsterpedia.feature.encyclopedia.mvi.MonsterDetailIntent
 import com.katelee.monsterpedia.feature.encyclopedia.viewmodel.MonsterDetailViewModel
+import com.katelee.monsterpedia.ui.ErrorScreen
 import com.katelee.monsterpedia.ui.ImageWithDominantColor
+import com.katelee.monsterpedia.ui.LoadingScreen
 import kotlin.collections.forEach
 
 @Composable
