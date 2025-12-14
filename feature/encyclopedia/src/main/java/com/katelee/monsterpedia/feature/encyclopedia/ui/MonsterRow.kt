@@ -18,6 +18,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.katelee.monsterpedia.domain.model.Monster
+import com.katelee.monsterpedia.ui.ImageWithDominantColor
 
 @Composable
 fun MonsterRow(
@@ -33,7 +34,7 @@ fun MonsterRow(
             containerColor = dominantColor
         )
     ) {
-        MonsterImageWithDominantColor(monster.imageUrl,
+        ImageWithDominantColor(monster.imageUrl,
             contentScale = ContentScale.FillWidth,
             modifier = Modifier.padding(8.dp).fillMaxWidth()) {
             dominantColor = it

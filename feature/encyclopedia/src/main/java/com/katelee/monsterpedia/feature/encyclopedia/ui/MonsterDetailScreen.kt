@@ -57,6 +57,7 @@ import com.katelee.monsterpedia.domain.model.Stat
 import com.katelee.monsterpedia.feature.encyclopedia.R
 import com.katelee.monsterpedia.feature.encyclopedia.mvi.MonsterDetailIntent
 import com.katelee.monsterpedia.feature.encyclopedia.viewmodel.MonsterDetailViewModel
+import com.katelee.monsterpedia.ui.ImageWithDominantColor
 import kotlin.collections.forEach
 
 @Composable
@@ -93,7 +94,7 @@ fun MonsterDetailScreen(
                     colors = CardDefaults.cardColors(
                         containerColor = dominantColor
                     )) {
-                    MonsterImageWithDominantColor(monster.imageUrl,
+                    ImageWithDominantColor(monster.imageUrl,
                         contentScale = ContentScale.FillHeight,
                         modifier = Modifier
                             .height(300.dp)

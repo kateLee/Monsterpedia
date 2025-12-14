@@ -1,4 +1,4 @@
-package com.katelee.monsterpedia.feature.encyclopedia.ui
+package com.katelee.monsterpedia.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -13,7 +13,7 @@ import coil3.request.crossfade
 import coil3.toBitmap
 
 @Composable
-fun MonsterImageWithDominantColor(
+fun ImageWithDominantColor(
     imageUrl: String,
     modifier: Modifier = Modifier,
     contentScale: ContentScale,

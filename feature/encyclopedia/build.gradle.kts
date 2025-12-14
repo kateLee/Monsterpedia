@@ -63,13 +63,10 @@ dependencies {
     implementation(libs.androidx.compose.material.icons.extended)
 
     implementation(libs.hilt.android)
-    implementation(libs.androidx.palette.ktx)
     ksp(libs.hilt.compiler)
 
-    api(libs.coil.compose)
-    api(libs.coil.network.okhttp)
-
     implementation(project(":domain"))
+    implementation(project(":ui"))
 
     // ==================== Unit Test (JUnit 6) ====================
     // Aligning all JUnit dependencies to the same version
