@@ -2,6 +2,10 @@ package com.katelee.monsterpedia.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
@@ -9,9 +13,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.katelee.monsterpedia.feature.encyclopedia.mvi.MonsterDetailEffect
+import com.katelee.monsterpedia.feature.encyclopedia.mvi.MonsterListEffect
 import com.katelee.monsterpedia.feature.encyclopedia.ui.MonsterDetailScreen
 import com.katelee.monsterpedia.feature.encyclopedia.ui.MonsterListScreen
 import com.katelee.monsterpedia.feature.encyclopedia.viewmodel.MonsterDetailViewModel
+import com.katelee.monsterpedia.feature.encyclopedia.viewmodel.MonsterListViewModel
 
 @Composable
 fun MonsterNavGraph(navController: NavHostController, modifier: Modifier,
@@ -24,11 +30,24 @@ fun MonsterNavGraph(navController: NavHostController, modifier: Modifier,
         modifier = modifier,
     ) {
         composable(Routes.LIST) { backStackEntry ->
-            MonsterListScreen(
-                viewModel = hiltViewModel(backStackEntry),
-                onSelect = { id ->
-                    navController.navigate("detail/$id")
+            val viewModel = hiltViewModel<MonsterListViewModel>(backStackEntry)
+            var lastNavigatedId by remember { mutableStateOf<String?>(null) }
+
+            LaunchedEffect(viewModel.effect) {
+                viewModel.effect.collect { effect ->
+                    when (effect) {
+                        is MonsterListEffect.NavigateToDetail -> {
+                            if (effect.id != lastNavigatedId) {
+                                lastNavigatedId = effect.id
+                                navController.navigate("detail/${lastNavigatedId}")
+                            }
+                        }
+                    }
                 }
+            }
+
+            MonsterListScreen(
+                viewModel = viewModel,
             )
         }
 

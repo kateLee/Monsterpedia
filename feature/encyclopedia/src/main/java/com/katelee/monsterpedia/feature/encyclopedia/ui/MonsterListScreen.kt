@@ -22,12 +22,12 @@ import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemKey
 import com.katelee.monsterpedia.feature.encyclopedia.R
+import com.katelee.monsterpedia.feature.encyclopedia.mvi.MonsterListIntent
 import com.katelee.monsterpedia.feature.encyclopedia.viewmodel.MonsterListViewModel
 
 @Composable
 fun MonsterListScreen(
     viewModel: MonsterListViewModel,
-    onSelect: (String) -> Unit
 ) {
     val lazyPagingItems = viewModel.pagingDataFlow.collectAsLazyPagingItems()
 
@@ -43,7 +43,7 @@ fun MonsterListScreen(
                 verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 items(lazyPagingItems.itemCount, key = lazyPagingItems.itemKey { it.id }) { index ->
                     lazyPagingItems[index]?.run {
-                        MonsterRow(monster = this, onClick = { onSelect(id) })
+                        MonsterRow(monster = this, onClick = { viewModel.submit(MonsterListIntent.Select(id)) })
                     }
                 }
 

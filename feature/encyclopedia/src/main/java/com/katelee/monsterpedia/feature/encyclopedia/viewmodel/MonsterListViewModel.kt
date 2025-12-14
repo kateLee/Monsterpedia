@@ -4,9 +4,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.katelee.monsterpedia.domain.repository.MonsterRepository
+import com.katelee.monsterpedia.feature.encyclopedia.mvi.MonsterListEffect
 import com.katelee.monsterpedia.feature.encyclopedia.mvi.MonsterListIntent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -17,7 +20,10 @@ class MonsterListViewModel @Inject constructor(
 
     val pagingDataFlow = repo.getPaged().cachedIn(viewModelScope)
 
-    private val intentChannel = Channel<MonsterListIntent>(Channel.Factory.UNLIMITED)
+    private val intentChannel = Channel<MonsterListIntent>(Channel.UNLIMITED)
+
+    private val _effect = Channel<MonsterListEffect>()
+    val effect: Flow<MonsterListEffect> = _effect.receiveAsFlow()
 
     init {
         viewModelScope.launch {
@@ -30,7 +36,7 @@ class MonsterListViewModel @Inject constructor(
         intentChannel.trySend(intent)
     }
 
-    private suspend fun handle(intent: MonsterListIntent) {
+    private fun handle(intent: MonsterListIntent) {
         when (intent) {
             is MonsterListIntent.Load -> {
 //                _state.update { it.copy(isLoading = true, error = null) }
@@ -43,7 +49,9 @@ class MonsterListViewModel @Inject constructor(
 //                    }
             }
             is MonsterListIntent.Select -> {
-                // 發事件、導航或 set selected state
+                viewModelScope.launch {
+                    _effect.send(MonsterListEffect.NavigateToDetail(intent.id))
+                }
             }
         }
     }
